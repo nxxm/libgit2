@@ -7,9 +7,9 @@
 #ifndef INCLUDE_common_h__
 #define INCLUDE_common_h__
 
-#ifndef LIBGIT2_NO_FEATURES_H
-# include "git2/sys/features.h"
-#endif
+//#ifndef LIBGIT2_NO_FEATURES_H
+//# include "git2/sys/features.h"
+//#endif
 
 #include "git2/common.h"
 #include "cc-compat.h"
