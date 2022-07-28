@@ -17,6 +17,14 @@ if(POLICY CMP0025)
   cmake_policy(SET CMP0025 NEW)
 endif()
 
+##### PLATFORM deps ##### 
+set(HUNTER_ROOT $ENV{HUNTER_ROOT})
+include(HunterGate)
+HunterGate(
+    URL "unused" 
+    SHA1 "unused" 
+)
+##### PLATFORM deps #####
 
 project(libgit2 VERSION "1.1.0" LANGUAGES C)
 
@@ -32,7 +40,7 @@ set(targets_export_name "${PROJECT_NAME}Targets")
 set(namespace "${PROJECT_NAME}::")
 
 # Add find modules to the path
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${libgit2_SOURCE_DIR}/cmake/")
+list(APPEND CMAKE_MODULE_PATH "${libgit2_SOURCE_DIR}/cmake/")
 
 INCLUDE(CheckLibraryExists)
 INCLUDE(CheckFunctionExists)
@@ -47,6 +55,7 @@ INCLUDE(GNUInstallDirs)
 INCLUDE(IdeSplitSources)
 INCLUDE(FeatureSummary)
 INCLUDE(EnableWarnings)
+
 
 # Build options
 #
