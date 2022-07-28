@@ -228,6 +228,8 @@ IF (Libssh2_FOUND)
 	SET(GIT_SSH 1)
 	SET(GIT_SSH_MEMORY_CREDENTIALS 1)
 	set(SSH_LINKER_FLAG "Libssh2::libssh2")
+	message("luc luc luc luc")
+	message("${CMAKE_BINARY_DIR}")
 
 	LIST(APPEND LIBGIT2_SYSTEM_INCLUDES "${CMAKE_BINARY_DIR}/../sysroot/include")
 	LIST(APPEND LIBGIT2_LIBS "${CMAKE_BINARY_DIR}/../sysroot/lib")
