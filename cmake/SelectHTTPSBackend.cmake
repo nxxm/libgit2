@@ -69,7 +69,9 @@ IF(USE_HTTPS)
 					"ca-bundle.pem"             # OpenSUSE Leap 42.1
 					"cert.pem"                  # Ubuntu 14.04, FreeBSD
 					"certs/ca-certificates.crt" # Ubuntu 16.04
-					"certs/ca.pem"              # Debian 7
+					"certs/ca.pem"     
+					"openssl.cnf"
+					"x509v3.cnf"
 				)
 				FOREACH(SUFFIX IN LISTS OPENSSL_CA_LOCATIONS)
 					SET(LOC "${OPENSSL_DIR}${SUFFIX}")
