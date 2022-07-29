@@ -110,7 +110,7 @@ ENDIF()
 IF(WIN32)
 	# By default, libgit2 is built with WinHTTP.  To use the built-in
 	# HTTP transport, invoke CMake with the "-DWINHTTP=OFF" argument.
-	OPTION(WINHTTP			"Use Win32 WinHTTP routines"				 ON)
+	OPTION(WINHTTP			"Use Win32 WinHTTP routines"				 OFF)
 ENDIF()
 
 IF(MSVC)
