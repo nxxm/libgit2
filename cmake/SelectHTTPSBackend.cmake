@@ -60,12 +60,7 @@ IF(USE_HTTPS)
 
 		IF(NOT CERT_LOCATION)
 			MESSAGE(STATUS "Auto-detecting default certificates location")
-			IF(CMAKE_SYSTEM_NAME MATCHES Darwin)
-				# Check for an Homebrew installation
-				SET(OPENSSL_CMD "/usr/local/opt/openssl/bin/openssl")
-			ELSE()
-				SET(OPENSSL_CMD "openssl")
-			ENDIF()
+			SET(OPENSSL_CMD "openssl")
 			EXECUTE_PROCESS(COMMAND ${OPENSSL_CMD} version -d OUTPUT_VARIABLE OPENSSL_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
 			IF(OPENSSL_DIR)
 				STRING(REGEX REPLACE "^OPENSSLDIR: \"(.*)\"$" "\\1/" OPENSSL_DIR ${OPENSSL_DIR})
@@ -74,15 +69,7 @@ IF(USE_HTTPS)
 					"ca-bundle.pem"             # OpenSUSE Leap 42.1
 					"cert.pem"                  # Ubuntu 14.04, FreeBSD
 					"certs/ca-certificates.crt" # Ubuntu 16.04
-					"certs/ca.pem"  
-					"../ca-certificates/cert.pem"
-					"ct_log_list.cnf.dist"
-					"openssl.cnf"
-					"openssl.cnf.dist"
-					"ct_log_list.cnf"
-					"misc/CA.tpl"
-					"misc/tsget"
-					"misc/tsget.pl"
+					"certs/ca.pem"              # Debian 7
 				)
 				FOREACH(SUFFIX IN LISTS OPENSSL_CA_LOCATIONS)
 					SET(LOC "${OPENSSL_DIR}${SUFFIX}")
