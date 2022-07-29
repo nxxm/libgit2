@@ -60,12 +60,7 @@ IF(USE_HTTPS)
 
 		IF(NOT CERT_LOCATION)
 			MESSAGE(STATUS "Auto-detecting default certificates location")
-			IF(CMAKE_SYSTEM_NAME MATCHES Darwin)
-				# Check for an Homebrew installation
-				SET(OPENSSL_CMD "/usr/local/opt/openssl/bin/openssl")
-			ELSE()
-				SET(OPENSSL_CMD "openssl")
-			ENDIF()
+			SET(OPENSSL_CMD "openssl")
 			EXECUTE_PROCESS(COMMAND ${OPENSSL_CMD} version -d OUTPUT_VARIABLE OPENSSL_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
 			IF(OPENSSL_DIR)
 				STRING(REGEX REPLACE "^OPENSSLDIR: \"(.*)\"$" "\\1/" OPENSSL_DIR ${OPENSSL_DIR})
