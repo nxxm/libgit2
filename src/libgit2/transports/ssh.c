@@ -457,7 +457,7 @@ static int _git_ssh_session_create(
 	#define LIBSSH2_TRACE_ERROR (1<<7)
 	#define LIBSSH2_TRACE_PUBLICKEY
 	*/
-	libssh2_trace(LIBSSH2_TRACE_ERROR | LIBSSH2_TRACE_AUTH);
+	libssh2_trace(s, LIBSSH2_TRACE_ERROR | LIBSSH2_TRACE_AUTH);
 
 	libssh2_session_set_blocking(s, 1);
 
