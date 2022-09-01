@@ -447,6 +447,18 @@ static int _git_ssh_session_create(
 		return -1;
 	}
 
+	/*
+	LIBSSH2_TRACE_TRANS (1<<1)
+	#define LIBSSH2_TRACE_KEX (1<<2)
+	#define LIBSSH2_TRACE_AUTH (1<<3)
+	#define LIBSSH2_TRACE_CONN (1<<4)
+	#define LIBSSH2_TRACE_SCP (1<<5)
+	#define LIBSSH2_TRACE_SFTP (1<<6)
+	#define LIBSSH2_TRACE_ERROR (1<<7)
+	#define LIBSSH2_TRACE_PUBLICKEY
+	*/
+	libssh2_trace(LIBSSH2_TRACE_ERROR | LIBSSH2_TRACE_AUTH);
+
 	libssh2_session_set_blocking(s, 1);
 
 	*session = s;
