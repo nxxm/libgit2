@@ -437,16 +437,6 @@ static int _git_ssh_session_create(
 		return -1;
 	}
 
-	do {
-		rc = libssh2_session_handshake(s, socket->s);
-	} while (LIBSSH2_ERROR_EAGAIN == rc || LIBSSH2_ERROR_TIMEOUT == rc);
-
-	if (rc != LIBSSH2_ERROR_NONE) {
-		ssh_error(s, "failed to start SSH session");
-		libssh2_session_free(s);
-		return -1;
-	}
-
 	/*
 	LIBSSH2_TRACE_TRANS (1<<1)
 	#define LIBSSH2_TRACE_KEX (1<<2)
@@ -457,7 +447,21 @@ static int _git_ssh_session_create(
 	#define LIBSSH2_TRACE_ERROR (1<<7)
 	#define LIBSSH2_TRACE_PUBLICKEY
 	*/
-	libssh2_trace(s, LIBSSH2_TRACE_ERROR | LIBSSH2_TRACE_AUTH);
+	libssh2_trace(s, LIBSSH2_TRACE_TRANS | LIBSSH2_TRACE_ERROR | LIBSSH2_TRACE_AUTH);
+
+	
+
+	do {
+		rc = libssh2_session_handshake(s, socket->s);
+	} while (LIBSSH2_ERROR_EAGAIN == rc || LIBSSH2_ERROR_TIMEOUT == rc);
+
+	if (rc != LIBSSH2_ERROR_NONE) {
+		ssh_error(s, "failed to start SSH session");
+		libssh2_session_free(s);
+		return -1;
+	}
+
+
 
 	libssh2_session_set_blocking(s, 1);
 
