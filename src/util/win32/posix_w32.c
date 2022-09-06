@@ -445,6 +445,8 @@ int p_symlink(const char *target, const char *path)
 	git_win32_path target_w, path_w;
 	DWORD dwFlags;
 
+	printf("YYYYYY / Create symlink\n targ -> %s\n path -> %s\n", target, path); 
+
 	/*
 	 * Convert both target and path to Windows-style paths. Note that we do
 	 * not want to use `git_win32_path_from_utf8` for converting the target,
@@ -453,17 +455,23 @@ int p_symlink(const char *target, const char *path)
 	 * relative symlinks, this is not something we want.
 	 */
 	if (git_win32_path_from_utf8(path_w, path) < 0 ||
-	    git_win32_path_relative_from_utf8(target_w, target) < 0)
+	    git_win32_path_relative_from_utf8(target_w, target) < 0) {
+
+		puts(" x Failed"); 
+
 		return -1;
+	}
 
 	dwFlags = SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE;
 	if (target_is_dir(target, path))
 		dwFlags |= SYMBOLIC_LINK_FLAG_DIRECTORY;
 
-	printf("YYYYYY / Create symlink %s %s", target, path); 
+	printf(" -> Creating the symlink\n"); 
 
 	if (!CreateSymbolicLinkW(path_w, target_w, dwFlags))
 		return -1;
+
+	printf(" V Success\n"); 
 
 	return 0;
 }
