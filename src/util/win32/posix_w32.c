@@ -428,7 +428,7 @@ static bool target_is_dir(const char *target, const char *path)
 
 out:
 	git_str_dispose(&resolved);
-	printf("YYYYY/This is a test: '%d'\n", x); 
+	printf("YYYYY/This is a test: '%d'\n", isdir); 
 	return isdir;
 }
 
