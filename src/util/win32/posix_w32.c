@@ -417,18 +417,26 @@ static bool target_is_dir(const char *target, const char *path)
 	git_win32_path resolved_w;
 	bool isdir = true;
 
-	if (git_fs_path_is_absolute(target))
+	puts("YYYYYY/");
+
+	if (git_fs_path_is_absolute(target)) {
+		puts("git_fs_path_is_absolute: true/");	
 		git_win32_path_from_utf8(resolved_w, target);
+	}
 	else if (git_fs_path_dirname_r(&resolved, path) < 0 ||
 		 git_fs_path_apply_relative(&resolved, target) < 0 ||
-		 git_win32_path_from_utf8(resolved_w, resolved.ptr) < 0)
+		 git_win32_path_from_utf8(resolved_w, resolved.ptr) < 0) 
+	{
+		puts("going to $out/");	
 		goto out;
-
+	}
+		
+	puts("checking file attributes/");	
 	isdir = GetFileAttributesW(resolved_w) & FILE_ATTRIBUTE_DIRECTORY;
 
 out:
 	git_str_dispose(&resolved);
-	printf("YYYYY/This is a test: '%d'\n", isdir); 
+	printf("result: '%s'\n", (isdir == true) ? "true" : "false"); 
 	return isdir;
 }
 
