@@ -460,6 +460,8 @@ int p_symlink(const char *target, const char *path)
 	if (target_is_dir(target, path))
 		dwFlags |= SYMBOLIC_LINK_FLAG_DIRECTORY;
 
+	printf("YYYYYY / Create symlink %s %s", target, path); 
+
 	if (!CreateSymbolicLinkW(path_w, target_w, dwFlags))
 		return -1;
 
