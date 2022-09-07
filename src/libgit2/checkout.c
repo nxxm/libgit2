@@ -235,9 +235,9 @@ static bool checkout_is_workdir_modified(
 	/*
 	 * force recreate all links...
 	 */
-	if(S_ISLNK(wditem->mode) && S_ISLNK(newitem->mode)) {
+	if(S_ISLNK(wditem->mode)) {
 		puts("This is a link");
-		return false;
+		return true;
 	}
 
 	/* if the workdir item is a directory, it cannot be a modified file */
