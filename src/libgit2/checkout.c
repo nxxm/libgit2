@@ -232,6 +232,14 @@ static bool checkout_is_workdir_modified(
 	if (baseitem->size && wditem->file_size != baseitem->size)
 		return true;
 
+	/*
+	 * force recreate all links...
+	 */
+	if(S_ISLNK(wditem->mode) && S_ISLNK(newitem->mode)) {
+		puts("This is a link");
+		return false;
+	}
+
 	/* if the workdir item is a directory, it cannot be a modified file */
 	if (S_ISDIR(wditem->mode))
 		return false;
@@ -1880,7 +1888,7 @@ static int checkout_create_the_new(
 
 	git_vector_foreach(&data->diff->deltas, i, delta) {
 		if (actions[i] & CHECKOUT_ACTION__UPDATE_BLOB && S_ISLNK(delta->new_file.mode)) {
-			if ((error = checkout_blob(data, &delta->new_file)) < 0)
+			if ((error = checkout_blob(data, &delta->new_file)) < 0) 
 				return error;
 			data->completed_steps++;
 			report_progress(data, delta->new_file.path);
