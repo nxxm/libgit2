@@ -1054,10 +1054,8 @@ static int update_refs_from_report(
 	}
 
 	// We filter out PKT_SHALLOW refs
-	git_vector_foreach(refs, i, ref_in_vector) {
-		const git_pkt_ref *ref_typed=ref_in_vector;
-
-		if (ref_typed.type == GIT_PKT_SHALLOW) {
+	git_vector_foreach(refs, i, ref) {
+		if (ref->type == GIT_PKT_SHALLOW) {
 			git_vector_remove(refs, i);
 		}
 	}
