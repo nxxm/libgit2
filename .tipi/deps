@@ -1,0 +1,24 @@
+{
+  "u": true,
+  "packages": [ "libgit2" ],
+  "targets": [ "libgit2::libgit2package" ],
+  "nxxm/libssh2": {
+    "@": ":81e3fb0f58a0cbbc57d7acfe5f53f8511583dd6f",
+    "u": true,
+    "packages": [ "Libssh2" ],
+    "targets": [ "Libssh2::libssh2" ]
+  },
+  "hunter-packages/zlib": {
+    "@": "v1.2.11-p1",
+    "packages": [
+        "ZLIB"
+    ],
+    "targets": [
+        "ZLIB::zlib"
+    ],
+    "u": true
+  },
+  "platform:linux-cxx17": [ "target::dl" ],
+  "platform:linux": [ "target::dl" ],
+  "platform:vs-16-2019-win64-cxx17": [ "target::crypt32" ]
+}

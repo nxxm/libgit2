@@ -4,12 +4,27 @@
 # This top-level CMakeLists.txt sets up configuration options and
 # determines which subprojects to build.
 
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.17.0)
+
+if(POLICY CMP0025)
+   cmake_policy(SET CMP0025 NEW)
+ endif()
 
 project(libgit2 VERSION "1.5.0" LANGUAGES C)
 
+###############
+ ### Install ###
+ ###############
+ set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
+ set(config_install_dir "lib/cmake/${PROJECT_NAME}")
+ set(include_install_dir "include")
+ set(version_config "${generated_dir}/${PROJECT_NAME}ConfigVersion.cmake")
+ set(project_config "${generated_dir}/${PROJECT_NAME}Config.cmake")
+ set(targets_export_name "${PROJECT_NAME}Targets")
+ set(namespace "${PROJECT_NAME}::")
+
 # Add find modules to the path
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
 #
 # Build options
@@ -36,6 +51,7 @@ option(USE_SHA1                "Enable SHA1. Can be set to CollisionDetection(ON
 option(USE_SHA256              "Enable SHA256. Can be set to HTTPS/Builtin" ON)
 option(USE_GSSAPI              "Link with libgssapi for SPNEGO auth"      OFF)
    set(USE_HTTP_PARSER         "" CACHE STRING "Specifies the HTTP Parser implementation; either system or builtin.")
+#  set(USE_XDIFF               "" CACHE STRING "Specifies the xdiff implementation; either system or builtin.")
    set(REGEX_BACKEND           "" CACHE STRING "Regular expression implementation. One of regcomp_l, pcre2, pcre, regcomp, or builtin.")
 option(USE_BUNDLED_ZLIB        "Use the bundled version of zlib. Can be set to one of Bundled(ON)/Chromium. The Chromium option requires a x86_64 processor with SSE4.2 and CLMUL" OFF)
 
@@ -85,7 +101,9 @@ endif()
 if(WIN32)
 	# By default, libgit2 is built with WinHTTP.  To use the built-in
 	# HTTP transport, invoke CMake with the "-DUSE_WINHTTP=OFF" argument.
-	option(USE_WINHTTP         "Use Win32 WinHTTP routines"                         ON)
+	option(USE_WINHTTP         "Use Win32 WinHTTP routines"                         OFF)
+
+	option(USE_SSPI            "Use the SSPI implementation on windows"      		ON)
 endif()
 
 if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
@@ -99,7 +117,7 @@ include(CheckLibraryExists)
 include(CheckFunctionExists)
 include(CheckSymbolExists)
 include(CheckStructHasMember)
-include(CheckPrototypeDefinition)
+include(CheckPrototypeDefinitionSafe)
 include(AddCFlagIfSupported)
 include(FindPkgLibraries)
 include(FindThreads)
@@ -148,3 +166,40 @@ endif()
 
 feature_summary(WHAT ENABLED_FEATURES DESCRIPTION "Enabled features:")
 feature_summary(WHAT DISABLED_FEATURES DESCRIPTION "Disabled features:")
+
+### install
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+  "${version_config}" COMPATIBILITY SameMajorVersion
+  )
+
+# Note: use 'targets_export_name'
+configure_package_config_file(
+  "${PROJECT_SOURCE_DIR}/cmake/Config.cmake.in"
+  "${project_config}"
+  INSTALL_DESTINATION "${config_install_dir}"
+  )
+
+install(
+  DIRECTORY "include/" # No trailing slash
+  DESTINATION "${include_install_dir}"
+  FILES_MATCHING PATTERN "*.h"
+  )
+
+install(
+	DIRECTORY "include/git2" # No trailing slash
+	DESTINATION "${include_install_dir}"
+	FILES_MATCHING PATTERN "*.h"
+	)
+
+install(
+  FILES "${project_config}" "${version_config}"
+  DESTINATION "${config_install_dir}"
+  )
+
+install(
+  EXPORT "${targets_export_name}"
+  NAMESPACE "${namespace}"
+  DESTINATION "${config_install_dir}"
+  )
