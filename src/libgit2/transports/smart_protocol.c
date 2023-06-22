@@ -1053,6 +1053,13 @@ static int update_refs_from_report(
 		}
 	}
 
+	// We filter out PKT_SHALLOW refs
+	git_vector_foreach(refs, i, ref) {
+		if (ref->type == GIT_PKT_SHALLOW) {
+			git_vector_remove(refs, i);
+		}
+	}
+
 	/* We require that refs be sorted with ref_name_cmp */
 	git_vector_sort(refs);
 	i = j = 0;
