@@ -1,24 +1,71 @@
 {
-  "u": true,
-  "packages": [ "libgit2" ],
-  "targets": [ "libgit2::libgit2package" ],
-  "nxxm/libssh2": {
-    "@": ":81e3fb0f58a0cbbc57d7acfe5f53f8511583dd6f",
-    "u": true,
-    "packages": [ "Libssh2" ],
-    "targets": [ "Libssh2::libssh2" ]
-  },
   "hunter-packages/zlib": {
     "@": "v1.2.11-p1",
     "packages": [
-        "ZLIB"
+      "ZLIB"
     ],
     "targets": [
-        "ZLIB::zlib"
+      "ZLIB::zlib"
     ],
     "u": true
   },
-  "platform:linux-cxx17": [ "target::dl" ],
-  "platform:linux": [ "target::dl" ],
-  "platform:vs-16-2019-win64-cxx17": [ "target::crypt32" ]
+  "nxxm/libssh2": {
+    "@": ":fa8f9fd82dd44560cc8864f645fc4c241b3c281b",
+    "packages": [
+      "Libssh2"
+    ],
+    "requires": {
+      "hunter-packages/zlib": {
+        "@": "v1.2.11-p1",
+        "packages": [
+          "ZLIB"
+        ],
+        "targets": [
+          "ZLIB::zlib"
+        ],
+        "u": true
+      },
+      "google/boringssl": {
+        "@": ":f896fbd7a94daf801446ae997d288e7f03a5d9a2",
+        "find_mode": "MODULE",
+        "packages": [
+          "OpenSSL"
+        ],
+        "targets": [
+          "OpenSSL::SSL",
+          "OpenSSL::Crypto"
+        ],
+        "u": true
+      }
+    },
+    "targets": [
+      "Libssh2::libssh2_static"
+    ],
+    "u": true
+  },
+  "google/boringssl": {
+    "@": ":f896fbd7a94daf801446ae997d288e7f03a5d9a2",
+    "find_mode": "MODULE",
+    "packages": [
+      "OpenSSL"
+    ],
+    "targets": [
+      "OpenSSL::SSL",
+      "OpenSSL::Crypto"
+    ],
+    "u": true
+  },
+  "targets": [
+    "libgit2::libgit2package"
+  ],
+  "u": true,
+  "platform:linux-cxx17": [
+    "target::dl"
+  ],
+  "platform:linux": [
+    "target::dl"
+  ],
+  "platform:vs-16-2019-win64-cxx17": [
+    "target::crypt32"
+  ]
 }
